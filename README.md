@@ -123,6 +123,19 @@ CursorRules Pro encodes years of production experience into concise instructions
 
 ---
 
+## More Developer Tools
+
+| Product | Description | Price |
+|---------|-------------|-------|
+| [LaunchFast SaaS Starter](https://github.com/Wittlesus/launchfast-starter) | Next.js 16 boilerplate with auth, payments, AI, email | $79 |
+| [PageBrain Extension](https://github.com/Wittlesus/pagebrain-extension) | Summarize any page with AI (Chrome) | Free |
+| [SEO Blog Engine](https://github.com/Wittlesus/seo-blog-engine) | CLI for generating SEO blog posts | $29 |
+| [Indie Hacker Toolkit](https://github.com/Wittlesus/indie-hacker-toolkit) | 5 planning templates for solo founders | $19 |
+| [PromptVault](https://github.com/Wittlesus/prompt-vault) | 64 production-ready AI prompts | $19 |
+| [Complete Bundle](https://buy.stripe.com/5kQeVceTj0P8enGe7U08g06) | All products above | $99 |
+
+---
+
 ## License
 
 For personal and commercial use. You may use these rules in any project. You may not redistribute or resell the rules collection itself.
