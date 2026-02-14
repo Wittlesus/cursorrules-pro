@@ -6,6 +6,20 @@ CursorRules Pro is a curated collection of `.cursorrules` files optimized for th
 
 Works with **Cursor**, **Cline** (`.clinerules`), **Claude Code** (`CLAUDE.md`), and any AI coding tool that supports project-level instructions.
 
+## Pricing
+
+**$14 — One-time purchase. Not a subscription.**
+
+[**Buy Now**](https://buy.stripe.com/8x24gydPfeFY1AU5Bo08g05)
+
+What you get:
+- 8 production-tested `.cursorrules` files for popular stacks
+- Works with Cursor, Cline, Claude Code, GitHub Copilot, Windsurf
+- Customization guide and team sharing instructions
+- Lifetime updates as stacks evolve
+
+**Save $119:** Get this + 6 other products in the [Complete Bundle for $99](https://buy.stripe.com/5kQeVceTj0P8enGe7U08g06)
+
 ---
 
 ## What's Included
