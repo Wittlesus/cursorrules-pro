@@ -1,0 +1,75 @@
+# Go (Golang) — CursorRules Pro
+
+You are an expert Go developer. Follow these rules strictly.
+
+## Project Conventions
+- Go 1.22+. Use the standard library wherever possible before reaching for third-party packages.
+- Follow the standard project layout: `cmd/`, `internal/`, `pkg/` (if needed), `api/`, `configs/`.
+- Use `go mod` for dependency management. Keep `go.sum` committed.
+- All code must pass `go vet`, `golangci-lint run`, and `gofmt`. No exceptions.
+- Use `//nolint` directives sparingly and always with a justification comment.
+
+## Code Style
+- Follow Effective Go and the Go Code Review Comments guidelines.
+- Exported names: PascalCase. Unexported: camelCase. Acronyms are all caps: `HTTPClient`, `userID`.
+- Keep functions short (under 40 lines). Extract helper functions for readability.
+- Use named return values only when they improve documentation — not as a default.
+- Group imports: stdlib, then a blank line, then third-party, then internal packages.
+
+## Error Handling
+- Always check errors. Never use `_` to discard errors unless explicitly justified with a comment.
+- Return errors as the last return value: `func Foo() (Result, error)`.
+- Wrap errors with context using `fmt.Errorf("doing X: %w", err)` — always use `%w` for wrapping.
+- Define sentinel errors with `var ErrNotFound = errors.New("not found")` for expected failures.
+- Use `errors.Is()` and `errors.As()` for error inspection — never compare error strings.
+
+## Interfaces
+- Define interfaces where they are used, not where they are implemented.
+- Keep interfaces small: 1-3 methods maximum. Compose larger interfaces from smaller ones.
+- Accept interfaces, return structs: `func NewService(repo UserRepository) *UserService`.
+- Use the standard naming convention: single-method interfaces end in `-er` (Reader, Writer, Closer).
+- Never export interfaces solely for mocking — keep them in the consumer package.
+
+## Goroutines & Concurrency
+- Always pass `context.Context` as the first parameter to functions that do I/O or may block.
+- Use `errgroup.Group` for concurrent work with error propagation.
+- Never start a goroutine without a clear shutdown mechanism — use `context.WithCancel`.
+- Use channels for communication, mutexes for state protection. Do not mix patterns.
+- Protect shared state with `sync.Mutex` or `sync.RWMutex`. Keep critical sections small.
+- Use `sync.Once` for one-time initialization.
+
+## HTTP APIs
+- Use the standard `net/http` mux (Go 1.22+) or `chi` router for HTTP APIs.
+- Structure handlers as methods on a server struct that holds dependencies.
+- Use middleware for cross-cutting concerns: logging, auth, recovery, request ID.
+- Return JSON with consistent envelope: `{"data": ..., "error": null}`.
+- Set proper timeouts on `http.Server`: ReadTimeout, WriteTimeout, IdleTimeout.
+
+## Database
+- Use `database/sql` with a driver, or `sqlx` for ergonomic query execution.
+- Always use parameterized queries — never concatenate user input into SQL strings.
+- Use `context.Context` for all database operations to support cancellation and deadlines.
+- Implement the repository pattern: define an interface, implement with a concrete struct.
+- Use transactions for multi-step mutations: `tx, err := db.BeginTx(ctx, nil)`.
+
+## Structs & Methods
+- Use struct embedding for composition, not inheritance. Embed interfaces sparingly.
+- Use pointer receivers for methods that mutate state, value receivers for pure functions.
+- Use functional options pattern for configurable constructors: `func NewClient(opts ...Option)`.
+- Use `struct{}` for sets: `map[string]struct{}` instead of `map[string]bool`.
+
+## Testing
+- Write table-driven tests with `t.Run()` for subtests.
+- Use `testify/assert` and `testify/require` for readable assertions.
+- Use `httptest.NewServer` for testing HTTP handlers without spinning up a real server.
+- Mock dependencies with interfaces — generate mocks with `mockery` or `gomock`.
+- Place tests in the same package for unit tests, `_test` package for black-box tests.
+- Use `t.Parallel()` for tests that can run concurrently.
+
+## Common Mistakes to Avoid
+- Do NOT ignore errors — every error must be handled or explicitly documented why it is discarded.
+- Do NOT use `panic` for normal error handling — reserve it for truly unrecoverable states.
+- Do NOT use `init()` functions — use explicit initialization in `main()`.
+- Do NOT pass large structs by value — use pointers for structs with more than 3-4 fields.
+- Do NOT use goroutines without a way to stop them — always provide a cancellation mechanism.
+- Do NOT use `sync.WaitGroup` without `defer wg.Done()` — forgetting causes deadlocks.

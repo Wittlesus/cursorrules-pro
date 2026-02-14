@@ -1,0 +1,73 @@
+# Python FastAPI — CursorRules Pro
+
+You are an expert Python and FastAPI developer. Follow these rules strictly.
+
+## Project Conventions
+- Python 3.11+. Use modern syntax: `X | Y` unions, `match` statements, f-strings.
+- Project layout: `app/` with `main.py`, `routers/`, `models/`, `schemas/`, `services/`, `core/`.
+- Use `pyproject.toml` for project config. Dependencies managed with `uv` or `poetry`.
+- All code must pass `ruff check` and `ruff format`. Line length: 88 characters.
+- Use absolute imports from the package root: `from app.models.user import User`.
+
+## FastAPI Patterns
+- Define routers in `app/routers/` and include them in `main.py` with prefixes and tags.
+- Use `async def` for all route handlers. Use `def` only for CPU-bound synchronous work.
+- Return Pydantic models from endpoints, never raw dicts. Set `response_model` explicitly.
+- Use status codes explicitly: `status_code=status.HTTP_201_CREATED` for creation endpoints.
+- Use `Annotated[Depends(...)]` syntax for dependency injection (not default parameter style).
+
+## Pydantic & Validation
+- Use Pydantic v2 with `model_config = ConfigDict(from_attributes=True)` for ORM models.
+- Separate schemas: `UserCreate`, `UserUpdate`, `UserResponse` — never reuse input as output.
+- Use `Field()` for validation constraints: `Field(min_length=1, max_length=255)`.
+- Define custom validators with `@field_validator` and `@model_validator` decorators.
+- Use `Enum` classes for fixed choice fields. Never accept raw strings for known sets.
+
+## Database (SQLAlchemy)
+- Use SQLAlchemy 2.0 style with `AsyncSession` and `select()` statements.
+- Define models in `app/models/` with `DeclarativeBase`. Use `Mapped[]` type annotations.
+- Create a session dependency: `async def get_db() -> AsyncGenerator[AsyncSession, None]`.
+- Use Alembic for migrations. Never modify the database schema manually.
+- Write repository classes in `app/services/` to encapsulate database queries — never query in route handlers.
+
+## Dependency Injection
+- Use FastAPI `Depends()` for all shared logic: auth, db sessions, pagination, rate limiting.
+- Chain dependencies: `current_user = Depends(get_current_active_user)`.
+- Use `Annotated` type aliases for common dependencies to reduce boilerplate:
+  `CurrentUser = Annotated[User, Depends(get_current_user)]`.
+- Scope dependencies appropriately — request-scoped for db, app-scoped for config.
+
+## Authentication & Security
+- Use OAuth2 with JWT tokens. Store secrets in environment variables, never in code.
+- Hash passwords with `passlib[bcrypt]` or `argon2-cffi`. Never store plaintext passwords.
+- Implement rate limiting with `slowapi` or a custom middleware.
+- Validate CORS origins explicitly — never use `allow_origins=["*"]` in production.
+- Use `HTTPBearer` security scheme and validate tokens in a dependency.
+
+## Error Handling
+- Define custom exception classes in `app/core/exceptions.py`.
+- Register exception handlers with `@app.exception_handler(CustomException)`.
+- Return consistent error responses: `{"detail": "message", "code": "ERROR_CODE"}`.
+- Use `HTTPException` for expected errors, let unexpected errors hit the global handler.
+- Log all errors with structlog — include request_id, user_id, and endpoint context.
+
+## Async Best Practices
+- Use `httpx.AsyncClient` for external API calls, never `requests`.
+- Use `asyncio.gather()` for concurrent independent operations.
+- Never use `time.sleep()` — use `asyncio.sleep()` in async code.
+- Use background tasks (`BackgroundTasks`) for non-blocking post-response work.
+
+## Testing
+- Use `pytest` with `pytest-asyncio` and `httpx.AsyncClient` for API tests.
+- Create a test database with fixtures — never test against production data.
+- Use `factory_boy` or custom fixtures for test data generation.
+- Test all status codes: 200, 201, 400, 401, 403, 404, 422.
+- Place tests in `tests/` mirroring the `app/` structure: `tests/routers/test_users.py`.
+
+## Common Mistakes to Avoid
+- Do NOT use `def` for route handlers that perform I/O — always use `async def`.
+- Do NOT return raw dicts from endpoints — use Pydantic response models.
+- Do NOT put business logic in route handlers — extract to service functions.
+- Do NOT use global mutable state — use dependency injection instead.
+- Do NOT skip input validation — every endpoint must validate with Pydantic.
+- Do NOT use `from sqlalchemy.orm import Session` — use `AsyncSession` for async code.

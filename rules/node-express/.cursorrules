@@ -1,0 +1,75 @@
+# Node.js Express API — CursorRules Pro
+
+You are an expert Node.js and Express developer. Follow these rules strictly.
+
+## Project Conventions
+- Node.js 20+ with ES modules (`"type": "module"` in package.json).
+- TypeScript with `strict: true`. Compile with `tsx` for development, `tsc` for production.
+- Project layout: `src/` with `server.ts`, `routes/`, `controllers/`, `services/`, `middleware/`, `models/`, `utils/`.
+- Use named exports for all modules. Default exports only for the Express app instance.
+- Environment config: load from `.env` with `dotenv` and validate with Zod at startup.
+
+## Express Patterns
+- Define routes in `src/routes/` grouped by resource. Mount on the app with versioned prefixes: `/api/v1/`.
+- Controllers handle request/response only — extract business logic to `src/services/`.
+- Use `express.Router()` for route grouping. Chain middleware per route, not globally when possible.
+- Always set security headers with `helmet`. Enable CORS with explicit origin lists.
+- Parse JSON bodies with `express.json({ limit: '10mb' })`. Reject oversized payloads.
+
+## Middleware
+- Execution order matters: security → parsing → auth → validation → handler → error.
+- Create typed middleware: `(req: Request, res: Response, next: NextFunction) => void`.
+- Use async middleware wrapper to catch promise rejections:
+  `const asyncHandler = (fn: Function) => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)`.
+- Apply rate limiting with `express-rate-limit` on auth endpoints and public APIs.
+- Log all requests with `morgan` or `pino-http` — include request ID, method, path, duration.
+
+## Validation
+- Validate all request inputs (body, params, query) with Zod schemas at the route level.
+- Create a `validate` middleware that takes a Zod schema and returns 422 on failure.
+- Never trust `req.params` types — always parse and validate (they are strings by default).
+- Sanitize user input to prevent XSS — use `DOMPurify` or similar for HTML content.
+- Define validation schemas adjacent to routes: `users.schema.ts` next to `users.routes.ts`.
+
+## Authentication & Authorization
+- Implement JWT auth with access tokens (short-lived) and refresh tokens (long-lived, httpOnly cookie).
+- Hash passwords with `bcrypt` (cost factor 12+). Never store plaintext passwords.
+- Create an `authenticate` middleware that verifies JWT and attaches `req.user`.
+- Implement role-based access: `authorize('admin', 'editor')` middleware for protected routes.
+- Store secrets in environment variables. Rotate JWT secrets periodically.
+
+## Database
+- Use Prisma or Drizzle ORM with TypeScript for type-safe database access.
+- Create a database service/client as a singleton — never instantiate per request.
+- Use transactions for multi-table mutations: `prisma.$transaction([...])`.
+- Implement pagination with cursor-based or offset patterns. Default page size: 20, max: 100.
+- Write database migrations for every schema change. Never alter production tables directly.
+
+## Error Handling
+- Define custom error classes extending `Error`: `AppError`, `NotFoundError`, `ValidationError`.
+- Create a centralized error handler as the LAST middleware: `(err, req, res, next)`.
+- Return consistent error responses: `{ success: false, error: { message, code, details } }`.
+- Never leak stack traces to clients in production — log them server-side only.
+- Handle unhandled rejections and uncaught exceptions at the process level — log and exit gracefully.
+
+## Performance & Security
+- Use `compression` middleware for response compression.
+- Implement request timeouts with `express-timeout-handler` or custom middleware.
+- Use connection pooling for database connections.
+- Set `trust proxy` correctly when behind a reverse proxy.
+- Implement graceful shutdown: handle SIGTERM, close connections, drain requests.
+
+## Testing
+- Use Vitest for unit and integration tests. Supertest for HTTP endpoint testing.
+- Create a test app factory that returns a configured Express app without starting the server.
+- Mock external services (database, APIs) in unit tests. Use real DB in integration tests.
+- Test all middleware independently — pass mock req/res/next objects.
+- Place tests adjacent to source: `users.service.ts` → `users.service.test.ts`.
+
+## Common Mistakes to Avoid
+- Do NOT use `var` or untyped `require()` — use `const`/`let` and ES module `import`.
+- Do NOT put business logic in route handlers — extract to service layer.
+- Do NOT forget the error-handling middleware — Express silently swallows async errors.
+- Do NOT use `res.send()` after `next()` — pick one per code path.
+- Do NOT store sessions in memory — use Redis or database-backed sessions.
+- Do NOT skip input validation — every endpoint must validate all inputs.

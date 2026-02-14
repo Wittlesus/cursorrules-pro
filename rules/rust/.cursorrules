@@ -1,0 +1,73 @@
+# Rust — CursorRules Pro
+
+You are an expert Rust developer. Follow these rules strictly.
+
+## Project Conventions
+- Use Rust 2021 edition. Target the latest stable toolchain.
+- Project layout: `src/` with `main.rs` or `lib.rs`, organized into modules with `mod.rs` or file-per-module.
+- Use a workspace (`Cargo.toml` with `[workspace]`) for multi-crate projects.
+- Run `cargo clippy` and `cargo fmt` before every commit. Fix all warnings.
+- Document all public APIs with `///` doc comments. Include examples in doc comments.
+
+## Ownership & Borrowing
+- Prefer borrowing (`&T`, `&mut T`) over ownership transfer unless the function needs to own the data.
+- Use `Clone` sparingly — it signals a design problem if cloning is frequent.
+- Prefer `&str` over `String` in function parameters. Accept `impl AsRef<str>` for maximum flexibility.
+- Return owned types (`String`, `Vec<T>`) from functions that create new data.
+- Use lifetimes explicitly when the compiler cannot infer them. Prefer named lifetimes over `'_`.
+
+## Error Handling
+- Define domain-specific error types with `thiserror`: `#[derive(Debug, thiserror::Error)]`.
+- Use `anyhow::Result` in application code, custom error types in library code.
+- Never use `.unwrap()` or `.expect()` in production code — use `?` operator or match.
+- Use `.unwrap()` only in tests and examples. Comment why if the unwrap is intentional.
+- Map errors at boundaries: convert library errors to application errors with context.
+
+## Type System & Patterns
+- Use the newtype pattern to add type safety: `struct UserId(Uuid)` instead of raw `Uuid`.
+- Prefer `enum` for state machines and variant types. Use exhaustive matching.
+- Implement `Display` and `Debug` for all public types.
+- Use `From`/`Into` traits for type conversions. Implement `TryFrom` for fallible conversions.
+- Use `Builder` pattern for complex struct construction. Derive `Default` when sensible.
+
+## Traits & Generics
+- Define traits for behavior abstraction. Keep traits small and focused (ISP).
+- Use `impl Trait` in argument position for simple cases, generics for complex bounds.
+- Prefer static dispatch (`impl Trait`) over dynamic dispatch (`dyn Trait`) unless you need heterogeneous collections.
+- Use trait objects (`Box<dyn Trait>`) for plugin architectures and runtime polymorphism.
+- Implement standard traits: `Debug`, `Clone`, `PartialEq`, `Eq`, `Hash` where applicable.
+
+## Async Rust
+- Use `tokio` as the async runtime. Annotate main with `#[tokio::main]`.
+- Use `async fn` and `.await` — never block the async runtime with synchronous I/O.
+- Use `tokio::spawn` for concurrent tasks. Use `tokio::select!` for racing futures.
+- Wrap blocking code with `tokio::task::spawn_blocking`.
+- Use channels (`tokio::sync::mpsc`) for inter-task communication.
+
+## Memory & Performance
+- Prefer stack allocation over heap allocation. Use `Box<T>` only when needed.
+- Use `Cow<'_, str>` for functions that sometimes need to own and sometimes borrow.
+- Use `Vec::with_capacity()` when the size is known upfront.
+- Prefer iterators over index-based loops — they optimize better and are more idiomatic.
+- Use `#[inline]` sparingly — let the compiler decide. Profile before optimizing.
+
+## Concurrency
+- Use `Arc<Mutex<T>>` for shared mutable state across threads. Prefer `RwLock` for read-heavy loads.
+- Use `crossbeam` for advanced concurrent data structures.
+- Avoid `Rc` in multi-threaded code — use `Arc` instead.
+- Use `Send` and `Sync` bounds explicitly when defining async interfaces.
+
+## Testing
+- Write unit tests in the same file with `#[cfg(test)] mod tests { ... }`.
+- Write integration tests in `tests/` directory for public API testing.
+- Use `#[should_panic]` for expected failure tests. Use `assert_matches!` for pattern testing.
+- Use `proptest` or `quickcheck` for property-based testing of complex logic.
+- Mock traits with `mockall` crate for dependency injection in tests.
+
+## Common Mistakes to Avoid
+- Do NOT use `.unwrap()` in production code — handle errors explicitly.
+- Do NOT fight the borrow checker — redesign if you are using `Rc<RefCell<T>>` everywhere.
+- Do NOT use `unsafe` unless absolutely necessary — document why and minimize scope.
+- Do NOT clone to satisfy the borrow checker — restructure ownership instead.
+- Do NOT ignore compiler warnings — they often indicate real bugs.
+- Do NOT use `String` where `&str` suffices — excessive allocation hurts performance.

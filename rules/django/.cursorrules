@@ -1,0 +1,75 @@
+# Django — CursorRules Pro
+
+You are an expert Django and Django REST Framework developer. Follow these rules strictly.
+
+## Project Conventions
+- Python 3.11+. Django 5.0+. Use modern Python syntax throughout.
+- Project layout: `config/` for settings, URLs, and WSGI/ASGI. Each feature is a Django app in `apps/`.
+- App naming: lowercase, short, descriptive: `apps/users/`, `apps/orders/`, `apps/payments/`.
+- Settings: use `django-environ` for environment variables. Split into `base.py`, `development.py`, `production.py`.
+- All code must pass `ruff check` and `ruff format`. Use `django-stubs` for type checking with mypy.
+
+## Models
+- Every model gets its own file in `models/` with an `__init__.py` that imports all models.
+- Define `__str__()` and `class Meta` (ordering, verbose_name) on every model.
+- Use `UUIDField` as primary key for public-facing IDs. Keep auto-increment `id` for internal FK use.
+- Add `created_at` and `updated_at` timestamp fields to every model via an abstract base model.
+- Use `django.db.models.TextChoices` or `IntegerChoices` for choice fields — not raw tuples.
+- Index frequently queried fields. Use `db_index=True` or `Meta.indexes` for composite indexes.
+
+## Views & URLs
+- Use class-based views (CBVs) for standard CRUD. Use function-based views only for simple, one-off endpoints.
+- For DRF: use `ModelViewSet` for full CRUD, `APIView` for custom logic.
+- URL naming: `app_name:action-resource` — e.g., `users:detail-user`, `orders:list-order`.
+- Nest URLs logically: `/api/v1/users/`, `/api/v1/users/{id}/orders/`.
+- Use `get_object_or_404()` — never catch `DoesNotExist` manually in views.
+
+## Serializers (DRF)
+- Define separate serializers for create, update, and read operations.
+- Use `ModelSerializer` for standard CRUD. Use plain `Serializer` for complex input validation.
+- Nest related data in read serializers. Use PrimaryKeyRelatedField for write serializers.
+- Validate at the serializer level with `validate_<field>()` and `validate()` methods.
+- Use `SerializerMethodField` for computed fields. Never add business logic to serializers.
+
+## QuerySets & Managers
+- Define custom managers for reusable query logic: `objects = UserManager()`.
+- Use `.select_related()` for FK joins and `.prefetch_related()` for M2M/reverse FK to avoid N+1.
+- Never iterate over querysets in templates or serializers without pagination.
+- Use `.only()` and `.defer()` to limit fields when full model loading is unnecessary.
+- Write raw SQL only as a last resort — use `.annotate()`, `.aggregate()`, and F/Q expressions.
+
+## Authentication & Permissions
+- Use `django-allauth` or `dj-rest-auth` for authentication flows.
+- Define custom permissions in `permissions.py` per app. Use `IsAuthenticated` as the default.
+- Implement object-level permissions for multi-tenant or ownership-based access control.
+- Use `@permission_required` decorator or `PermissionRequiredMixin` for view-level checks.
+- Store secrets with `django-environ`. Never hardcode SECRET_KEY, database credentials, or API keys.
+
+## Signals & Tasks
+- Use signals sparingly — only for cross-app decoupling (e.g., user created → send welcome email).
+- Define signals in `signals.py`, connect them in `apps.py` `ready()` method.
+- For async work, use Celery tasks. Define tasks in `tasks.py` per app.
+- Always set Celery task `acks_late=True` and `retry_backoff=True` for reliability.
+- Never put slow I/O (emails, API calls, file processing) in the request-response cycle.
+
+## Templates
+- Use Django template language. Extend a `base.html` with `{% block %}` tags.
+- Keep logic out of templates — use template tags and filters for display formatting.
+- Use `{% include %}` for reusable partials. Use `{% component %}` with django-components if needed.
+- Escape all user content by default. Only use `|safe` when the content is explicitly sanitized.
+
+## Testing
+- Use `pytest-django` with fixtures. Prefer `pytest` style over `unittest.TestCase`.
+- Use `factory_boy` for model factories: `UserFactory`, `OrderFactory`.
+- Test views with `APIClient` for DRF, `Client` for standard Django views.
+- Test models independently — validate constraints, methods, and properties.
+- Use `@pytest.mark.django_db` for tests that hit the database. Use `TransactionTestCase` for transaction tests.
+- Place tests in `tests/` within each app: `apps/users/tests/test_views.py`.
+
+## Common Mistakes to Avoid
+- Do NOT query the database in a loop — use `.select_related()` and `.prefetch_related()`.
+- Do NOT put business logic in views or serializers — extract to a service layer in `services.py`.
+- Do NOT use `ForeignKey(on_delete=models.CASCADE)` without thinking — consider PROTECT or SET_NULL.
+- Do NOT skip migrations — run `makemigrations` and `migrate` for every model change.
+- Do NOT serve static files with Django in production — use WhiteNoise or a CDN.
+- Do NOT hardcode URLs — use `reverse()` or `{% url %}` template tag.

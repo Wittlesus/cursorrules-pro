@@ -1,0 +1,77 @@
+# SvelteKit — CursorRules Pro
+
+You are an expert SvelteKit and Svelte 5 developer. Follow these rules strictly.
+
+## Project Conventions
+- SvelteKit with Svelte 5 runes syntax. Use TypeScript for all `.ts` and `<script lang="ts">` files.
+- File naming: `+page.svelte`, `+layout.svelte`, `+server.ts` follow SvelteKit conventions. Components: PascalCase.
+- Place reusable components in `$lib/components/`, utilities in `$lib/utils/`, types in `$lib/types/`.
+- Use the `$lib` alias for all imports from the lib directory. Never use relative paths with `../`.
+- Enable `strict: true` in tsconfig.json. No `any` types.
+
+## Svelte 5 Runes
+- Use `$state()` for reactive state. Never use the legacy `let x = value` reactive declarations.
+- Use `$derived()` for computed values. Replace `$: computed = ...` with `let computed = $derived(...)`.
+- Use `$effect()` for side effects. Replace `$: { ... }` blocks with `$effect(() => { ... })`.
+- Use `$props()` for component props: `let { name, count = 0 }: Props = $props()`.
+- Use `$bindable()` for two-way binding props when needed.
+
+## Load Functions & Data
+- Fetch data in `+page.ts` (universal) or `+page.server.ts` (server-only) load functions.
+- Always type load function return values. Use `PageLoad` and `PageServerLoad` types.
+- Access loaded data with `export let data: PageData` in page components.
+- Use `depends()` and `invalidate()` for fine-grained cache invalidation.
+- Throw `error(404)` or `redirect(303, '/login')` from load functions for control flow.
+
+## Form Actions
+- Use SvelteKit form actions for mutations — define in `+page.server.ts` with `actions`.
+- Use progressive enhancement: `<form method="POST" use:enhance>`.
+- Return validation errors from actions using `fail(400, { errors })`.
+- Handle multiple actions per page: `?/create`, `?/delete` with named actions.
+- Use `$page.form` to access action return data for inline error display.
+
+## Stores & State
+- Use Svelte 5 runes for component-local state. Use stores for cross-component shared state.
+- Create stores in `$lib/stores/` — use writable, readable, and derived stores.
+- For server state, prefer load functions and invalidation over client-side stores.
+- Use context API (`setContext`/`getContext`) for dependency injection within component trees.
+- Never mutate store values directly — use `.update()` or `.set()` methods.
+
+## Routing & Navigation
+- Use file-based routing. Group related routes with `(group)` directories.
+- Use `+layout.ts` for shared data loading across route segments.
+- Implement route guards in `+layout.server.ts` by checking auth and throwing `redirect`.
+- Use `$page.url` and `$page.params` for accessing route information.
+- Prefetch data with `data-sveltekit-preload-data="hover"` on links.
+
+## Styling
+- Use Tailwind CSS with `@apply` sparingly — prefer utility classes in markup.
+- Scope component styles in `<style>` blocks. Use `:global()` only when necessary.
+- Use CSS custom properties for theming: `var(--color-primary)`.
+- Follow mobile-first responsive design with Tailwind breakpoints.
+
+## Server-Side Rendering
+- Default to SSR. Only disable for pages that genuinely cannot render on the server.
+- Use `+page.server.ts` for data that requires server-only resources (DB, secrets, APIs).
+- Set appropriate caching headers in load functions and API routes.
+- Use streaming with `await` blocks in Svelte for deferred data loading.
+
+## API Routes
+- Define API endpoints in `+server.ts` files with `GET`, `POST`, `PUT`, `DELETE` exports.
+- Parse and validate request bodies with Zod schemas.
+- Return proper HTTP status codes and consistent JSON response shapes.
+- Use hooks (`hooks.server.ts`) for global request processing: auth, logging, CORS.
+
+## Testing
+- Use Vitest for unit tests and Playwright for end-to-end tests.
+- Test components with `@testing-library/svelte`. Test behavior, not implementation.
+- Test load functions and form actions as standalone functions with mocked dependencies.
+- Place test files adjacent to source: `Component.svelte` → `Component.test.ts`.
+
+## Common Mistakes to Avoid
+- Do NOT use Svelte 4 syntax (`$:`, `export let`) when Svelte 5 runes are available.
+- Do NOT fetch data in `onMount` — use load functions for SSR-compatible data fetching.
+- Do NOT put secrets in universal load functions (`+page.ts`) — they run in the browser.
+- Do NOT use `goto()` in load functions — use `redirect()` instead.
+- Do NOT create API routes for operations that form actions can handle.
+- Do NOT skip `use:enhance` on forms — without it, forms cause full page reloads.
