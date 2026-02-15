@@ -1,13 +1,8 @@
-# AI Dev Config Toolkit — Production Configs for Every AI Coding Tool
+# AI Dev Config Toolkit — Cursor + Claude Code + Windsurf + Copilot
 
-**Stop configuring your AI coding tools. Start shipping.**
+**The only config pack that covers ALL major AI coding assistants.**
 
-awesome-cursorrules gives you Cursor rules. We give you complete production configs for EVERY AI coding tool, plus advanced starters and automation tools.
-
-The only AI coding config pack with:
-- **8 stack-specific configs** for Cursor, Claude Code, Windsurf & Copilot
-- **4 advanced project starters** (Next.js SaaS, Python API, React Native, Monorepo)
-- **Auto-generation tools** that scan your project and create configs automatically
+awesome-cursorrules has 37,800 stars but ZERO CLAUDE.md templates. cursor.directory has thousands of rules but zero Windsurf or Copilot configs. We give you **complete coverage** across Cursor, Claude Code, Windsurf, and GitHub Copilot.
 
 ## Pricing
 
@@ -16,13 +11,11 @@ The only AI coding config pack with:
 [**Buy Now**](https://buy.stripe.com/8x24gydPfeFY1AU5Bo08g05)
 
 What you get:
-- **8 stack-specific configs** — Next.js, React Native, FastAPI, Express, Rust, Go, SvelteKit, Django
-- **4 advanced starters** — Complete configs for Next.js SaaS, Python API, React Native, Monorepo
-- **Auto-generation tools** — Scan projects and create CLAUDE.md automatically
-- **Migration tools** — Convert between .cursorrules and CLAUDE.md formats
-- **Setup scripts** — One-command install for any starter (Bash + PowerShell)
+- **5 project type configs** — SaaS, API, Mobile, CLI, Data Science
+- **Each type includes 4 files** — `.cursorrules`, `CLAUDE.md`, `.windsurfrules`, `.github/copilot-instructions.md`
+- **Plus 8 legacy stack configs** — Next.js, React Native, FastAPI, Express, Rust, Go, SvelteKit, Django
 - Works with all major AI tools: Cursor, Cline, Claude Code, GitHub Copilot, Windsurf
-- Lifetime updates as stacks evolve
+- Lifetime updates as AI tools and frameworks evolve
 
 **Save $119:** Get this + 6 other products in the [Complete Bundle for $99](https://buy.stripe.com/5kQeVceTj0P8enGe7U08g06)
 
@@ -30,314 +23,278 @@ What you get:
 
 ## Why This vs Free Alternatives
 
-| Feature | awesome-cursorrules (free) | cursor.directory (free) | AI Dev Config Toolkit ($14) |
-|---------|---------------------------|-------------------------|------------------------------|
-| Cursor rules | Yes | Yes | Yes |
-| CLAUDE.md templates | No | No | Yes |
-| Windsurf configs | No | No | Yes |
-| Copilot instructions | No | No | Yes |
-| Advanced starters | No | No | **Yes (4 types)** |
-| Setup scripts | No | No | **Yes (Bash + PowerShell)** |
-| Auto-generators | No | No | **Yes** |
-| Migration tools | No | No | **Yes** |
-| Production-tested | Sometimes | Sometimes | Always |
-| Framework-current | Varies | Varies | Yes (Next.js 14+, Svelte 5, Pydantic v2, etc.) |
-| Length/Depth | 10-20 lines | 10-30 lines | 50-130 lines |
-| Multi-tool support | No | No | Yes |
+| Feature | awesome-cursorrules | cursor.directory | AI Dev Config Toolkit |
+|---------|---------------------|------------------|----------------------|
+| Cursor rules | ✅ Yes | ✅ Yes | ✅ Yes |
+| **CLAUDE.md templates** | ❌ No | ❌ No | ✅ **YES** |
+| Windsurf configs | ❌ No | ❌ No | ✅ **YES** |
+| Copilot instructions | ❌ No | ❌ No | ✅ **YES** |
+| Project type coverage | Stack-focused | Stack-focused | **Project-focused** |
+| Depth | 10-30 lines | 10-50 lines | 50-150 lines |
+| Production-tested | Varies | Varies | Always |
+| Multi-tool support | No | No | **Full coverage** |
 
-**The difference:** Free alternatives give you basic Cursor rules. We give you complete configuration coverage across all major AI coding tools, with deep, opinionated guidance that actually changes AI output quality.
+**The key difference:** Free alternatives give you basic Cursor rules for tech stacks. We give you comprehensive configs for **project types** across **all major AI coding tools**.
 
 ---
 
 ## What's Included
 
-### 8 Stack-Specific Config Sets
+### 5 Project Type Configs (NEW)
 
-Each stack includes configs for **all 4 major AI coding tools**:
+Each project type includes **4 complete config files**:
 
-| Stack | Coverage | Key Topics |
-|-------|----------|------------|
-| **Next.js + TypeScript** | `.cursorrules`, `CLAUDE.md`, `.windsurfrules`, `.github/copilot-instructions.md` | App Router, Server/Client Components, Server Actions, Tailwind, Zod validation |
-| **React Native / Expo** | Full multi-tool configs | Expo Router, FlatList, Zustand, native modules, platform-specific code |
-| **Python FastAPI** | Full multi-tool configs | Async patterns, Pydantic v2, SQLAlchemy 2.0, dependency injection, JWT auth |
-| **Node.js Express** | Full multi-tool configs | Middleware patterns, Zod validation, Prisma/Drizzle, JWT auth, error handling |
-| **Rust** | Full multi-tool configs | Ownership, lifetimes, error handling with thiserror/anyhow, async with tokio, traits |
-| **Go (Golang)** | Full multi-tool configs | Error wrapping, goroutines, interfaces, context, table-driven tests |
-| **SvelteKit** | Full multi-tool configs | Svelte 5 runes, load functions, form actions, SSR, stores |
-| **Django** | Full multi-tool configs | Models, DRF serializers, signals, Celery, pytest-django, factory_boy |
+#### 1. SaaS Project Config
+**Files:** `.cursorrules`, `CLAUDE.md`, `.windsurfrules`, `.github/copilot-instructions.md`
 
-### 4 Advanced Project Starters
+**Covers:**
+- Next.js 14+ App Router architecture
+- Server Components vs Client Components
+- Server Actions for mutations
+- TypeScript strict mode patterns
+- Zod validation patterns
+- Error handling and loading states
+- Testing strategy (Server vs Client)
+- Authentication and authorization
+- Database patterns (Prisma/Drizzle)
+- Deployment considerations
 
-Complete, opinionated configs that go beyond basic stack rules:
+**Perfect for:** Next.js SaaS products, web apps, dashboards, B2B tools
 
-#### 1. Next.js SaaS Starter
-- `.cursorrules` with SaaS-specific patterns (auth, Stripe, database)
-- `CLAUDE.md` with project structure, key files, deployment notes
-- `.vscode/settings.json` with recommended extensions
-- Pre-commit hook for AI-assisted code review
-- **Covers:** NextAuth.js, Stripe webhooks, Prisma, Server Actions, RBAC
+---
 
-#### 2. Python API Starter
-- `.cursorrules` for FastAPI/Flask production patterns
-- `CLAUDE.md` with API structure and conventions
-- `Makefile` with documented commands (dev, test, migrate)
-- **Covers:** SQLAlchemy 2.0 async, JWT auth, Pydantic v2, Alembic
+#### 2. API Project Config
+**Files:** `.cursorrules`, `CLAUDE.md`, `.windsurfrules`, `.github/copilot-instructions.md`
 
-#### 3. React Native Starter
-- `.cursorrules` for mobile-specific patterns
-- `CLAUDE.md` with navigation structure, platform differences
-- **Covers:** Expo Router, TanStack Query, Zustand, push notifications, EAS
+**Covers:**
+- Clean architecture (Controllers → Services → Repositories)
+- REST API design (proper HTTP methods, status codes)
+- Input validation with schemas
+- JWT authentication and RBAC
+- Database patterns and migrations
+- Error handling and logging
+- Rate limiting and security
+- Testing strategy (unit + integration)
+- Works with: FastAPI, Express, Nest.js, Go Fiber, Actix
 
-#### 4. Monorepo Starter
-- `.cursorrules` for Turborepo/Nx patterns
-- `CLAUDE.md` with workspace structure, task pipeline
-- **Covers:** pnpm workspaces, cross-package imports, caching, versioning
+**Perfect for:** REST APIs, GraphQL servers, microservices, backend services
 
-**One-command setup:**
-```bash
-./starters/setup.sh nextjs-saas /path/to/project  # Bash
-.\starters\setup.ps1 nextjs-saas C:\path\to\project  # PowerShell
-```
+---
 
-### Automation Tools
+#### 3. Mobile Project Config
+**Files:** `.cursorrules`, `CLAUDE.md`, `.windsurfrules`, `.github/copilot-instructions.md`
 
-#### `generate-claude-md.sh`
-Auto-generates CLAUDE.md from your project:
-- Detects tech stack (package.json, requirements.txt, etc.)
-- Extracts commands from package.json and Makefile
-- Generates project structure tree
-- Identifies key files
+**Covers:**
+- React Native + Expo patterns
+- FlatList performance optimization
+- Platform-specific code (iOS vs Android)
+- Expo Router navigation
+- State management (Zustand + React Query)
+- Native module usage (camera, location, etc.)
+- Permission handling
+- Secure storage for credentials
+- Testing (Jest + E2E with Maestro)
+- Build and deployment (EAS)
 
-```bash
-./tools/generate-claude-md.sh /path/to/project
-```
+**Perfect for:** iOS/Android apps, cross-platform mobile apps, Expo projects
 
-#### `migrate-cursorrules.sh`
-Converts between .cursorrules and CLAUDE.md formats:
-- Auto-detects conversion direction
-- Preserves formatting
-- Shows compatibility info
+---
 
-```bash
-./tools/migrate-cursorrules.sh .cursorrules CLAUDE.md
-./tools/migrate-cursorrules.sh CLAUDE.md .cursorrules
-```
+#### 4. CLI Tool Config
+**Files:** `.cursorrules`, `CLAUDE.md`, `.windsurfrules`, `.github/copilot-instructions.md`
+
+**Covers:**
+- Command structure (subcommands, flags, arguments)
+- User-friendly error messages
+- Progress indicators and colorized output
+- Interactive prompts with defaults
+- Configuration management (files + env vars)
+- Secrets handling (OS keychain)
+- Cross-platform compatibility
+- Testing CLI commands
+- Distribution (PyPI, npm, crates.io, binaries)
+
+**Perfect for:** Developer tools, automation scripts, deployment tools, system utilities
+
+---
+
+#### 5. Data Science / ML Config
+**Files:** `.cursorrules`, `CLAUDE.md`, `.windsurfrules`, `.github/copilot-instructions.md`
+
+**Covers:**
+- Jupyter notebook best practices
+- Reproducibility (random seeds, version control)
+- Data exploration and preprocessing
+- Train/validation/test splits (no data leakage)
+- Baseline models and proper metrics
+- Model training and hyperparameter tuning
+- Model evaluation and visualization
+- Production deployment patterns
+- Experiment tracking (MLflow, W&B)
+
+**Perfect for:** ML projects, data analysis, predictive modeling, research notebooks
+
+---
+
+### 8 Legacy Stack Configs
+
+For backwards compatibility, we include the original stack-specific configs:
+
+| Stack | Files | Key Topics |
+|-------|-------|------------|
+| Next.js + TypeScript | `.cursorrules` only | App Router, Server Components, Server Actions |
+| React Native / Expo | `.cursorrules` only | Expo Router, FlatList, native modules |
+| Python FastAPI | `.cursorrules` only | Async, Pydantic v2, SQLAlchemy 2.0 |
+| Node.js Express | `.cursorrules` only | Middleware, validation, Prisma/Drizzle |
+| Rust | `.cursorrules` only | Ownership, async tokio, error handling |
+| Go (Golang) | `.cursorrules` only | Goroutines, interfaces, error wrapping |
+| SvelteKit | `.cursorrules` only | Svelte 5 runes, load functions, form actions |
+| Django | `.cursorrules` only | DRF, Celery, pytest-django |
+
+**Note:** These are single-file `.cursorrules` configs. For multi-tool coverage, use the project type configs above.
 
 ---
 
 ## Quick Start
 
-### Option 1: Use an Advanced Starter (Recommended)
-
-For new projects or major setup:
-
+### For Cursor
 ```bash
-# Bash (Linux/macOS/Git Bash on Windows)
-./starters/setup.sh nextjs-saas /path/to/my-project
-
-# PowerShell (Windows)
-.\starters\setup.ps1 nextjs-saas C:\path\to\my-project
+# Copy the .cursorrules file for your project type
+cp config-templates/saas/.cursorrules /path/to/your/project/
+# Restart Cursor or reload window
 ```
 
-Available starters: `nextjs-saas`, `python-api`, `react-native`, `monorepo`
-
-This installs:
-- `.cursorrules` with stack-specific rules
-- `CLAUDE.md` with project structure and context
-- `.vscode/settings.json` (for applicable starters)
-- Pre-commit hooks (for applicable starters)
-- Makefile (for Python API)
-
-### Option 2: Auto-Generate from Existing Project
-
-For existing projects:
-
+### For Claude Code CLI
 ```bash
-./tools/generate-claude-md.sh /path/to/project
+# Copy the CLAUDE.md file for your project type
+cp config-templates/saas/CLAUDE.md /path/to/your/project/
+# Claude Code automatically reads CLAUDE.md files
 ```
 
-This scans your project and creates a basic `CLAUDE.md` with:
-- Detected tech stack
-- Project structure
-- Key commands
-- Key files
-
-### Option 3: Manual Setup (Stack-Specific Rules)
-
-#### For Cursor
-
-1. Copy the `.cursorrules` file for your stack from `rules/` into your project root.
-2. Open your project in Cursor. The rules are active immediately.
-
-#### For Claude Code
-
-1. Copy the `CLAUDE.md` template from a starter or use the auto-generator.
-2. Claude Code will auto-detect it.
-
-#### For Windsurf
-
-1. Copy the `.cursorrules` file and rename it to `.windsurfrules`.
-2. Place in your project root. Reload Windsurf to activate.
-
-#### For GitHub Copilot
-
-1. Create a `.github/` directory in your project root (if it doesn't exist).
-2. Copy your `.cursorrules` content into `.github/copilot-instructions.md`.
-
-### Option 4: Convert Between Formats
-
-Already have a `.cursorrules` file? Convert it:
-
+### For Windsurf
 ```bash
-./tools/migrate-cursorrules.sh .cursorrules CLAUDE.md
+# Copy the .windsurfrules file for your project type
+cp config-templates/saas/.windsurfrules /path/to/your/project/
+# Windsurf automatically detects and applies the rules
 ```
 
-Or convert from CLAUDE.md to .cursorrules:
-
+### For GitHub Copilot
 ```bash
-./tools/migrate-cursorrules.sh CLAUDE.md .cursorrules
+# Create .github directory if it doesn't exist
+mkdir -p /path/to/your/project/.github
+# Copy the copilot-instructions.md file
+cp config-templates/saas/.github/copilot-instructions.md /path/to/your/project/.github/
+# Copilot will use these instructions for all suggestions
 ```
 
 ---
 
-## All Supported AI Coding Tools
+## File Format Compatibility
 
-| Tool | Config File | Location | Format |
-|------|-------------|----------|--------|
-| **Cursor** | `.cursorrules` | Project root | Plain text |
-| **Cline** | `.clinerules` | Project root | Plain text |
-| **Claude Code** | `CLAUDE.md` | Project root | Markdown |
-| **GitHub Copilot** | `copilot-instructions.md` | `.github/` directory | Markdown |
-| **Windsurf** | `.windsurfrules` | Project root | Plain text |
+| Tool | File Name | Format |
+|------|-----------|--------|
+| Cursor | `.cursorrules` | Plain text |
+| Cline | `.clinerules` | Plain text (same content as .cursorrules) |
+| Claude Code | `CLAUDE.md` | Markdown with project context |
+| GitHub Copilot | `.github/copilot-instructions.md` | Markdown |
+| Windsurf | `.windsurfrules` | Plain text |
+
+---
+
+## What Makes CLAUDE.md Different?
+
+**CLAUDE.md files are project-specific instruction files for Claude Code CLI** — Anthropic's official CLI for Claude that's blowing up among developers.
+
+### Why They're Powerful
+
+1. **Project context** — Not just coding rules, but project structure, tech stack, deployment notes
+2. **Key commands** — Document your project's npm scripts, CLI commands, deployment steps
+3. **Common patterns** — Show the AI how YOUR project does auth, database access, API calls
+4. **Troubleshooting** — Pre-answer common questions (how to fix build errors, where are logs, etc.)
+
+### Example CLAUDE.md Features
+```markdown
+## Tech Stack
+- Framework: Next.js 14 (App Router)
+- Database: PostgreSQL with Prisma
+- Auth: NextAuth.js with Google OAuth
+- Payments: Stripe with webhooks
+
+## Key Commands
+npm run dev          # Start dev server
+npm run db:migrate   # Run Prisma migrations
+npm run test         # Run tests
+
+## Common Patterns
+// Server Action for mutations
+'use server';
+export async function updateProfile(formData: FormData) {
+  // validate, update DB, revalidate
+}
+
+## Troubleshooting
+- Build fails: Check .env.local has all required vars
+- DB errors: Run `npm run db:migrate`
+```
+
+**No free collection offers this.** awesome-cursorrules: 37,800 stars, zero CLAUDE.md templates.
 
 ---
 
 ## Customization Guide
 
-These configs are designed as a strong starting point. Customize them for your team:
+These configs are production-ready starting points. Customize them for your team:
 
-### Adding Your Conventions
-
-Add a section at the top of each config file with your project-specific rules:
-
-```
+### Add Your Project Details
+```markdown
 ## Our Project
-- We use pnpm, not npm or yarn.
-- Our API base URL is defined in `@/lib/api.ts`.
-- All components must have a corresponding Storybook story.
-- We follow the Conventional Commits spec for all commit messages.
+- Name: MyApp
+- Tech: Next.js 14, Prisma, NextAuth, Stripe
+- Database: PostgreSQL on Supabase
+- Hosting: Vercel
+- Monitoring: Sentry
 ```
 
-### Modifying Existing Rules
-
-Every rule is a plain-text line. Edit, delete, or reorder as needed:
-
-- **Remove** rules that conflict with your team's conventions.
-- **Strengthen** rules by adding "ALWAYS" or "NEVER" for critical patterns.
-- **Add examples** — AI assistants perform better with concrete code samples.
-
-### Combining Stacks
-
-For full-stack projects, use the provided starter templates or merge configs manually:
-
-```
-# Frontend: Next.js + TypeScript
-[paste nextjs-typescript rules]
-
-# Backend: Python FastAPI
-[paste python-fastapi rules]
-
-# Shared Rules
-- Use absolute imports everywhere
-- All API responses must match our ResponseSchema type
+### Add Your Conventions
+```markdown
+## Our Team Conventions
+- We use pnpm, not npm
+- API routes are prefixed with /api/v1/
+- All PRs require 2 approvals
+- We use Shadcn UI for components
+- We write JSDoc comments on all utils
 ```
 
-### Team Sharing
-
-Commit the config files to your repo so every team member gets the same AI behavior. Include them in your onboarding documentation.
+### Strengthen Critical Rules
+```markdown
+## NEVER VIOLATE
+- ALWAYS validate user input with Zod
+- NEVER commit .env files
+- ALWAYS write tests for Server Actions
+- NEVER use `any` type in TypeScript
+```
 
 ---
 
-## Why This Works
+## Benefits Over Generic Configs
 
-AI coding assistants generate better code when they understand your project's conventions. Without explicit rules, they:
+### Project-Focused, Not Stack-Focused
+Free alternatives organize by tech stack (Next.js, React, Python). We organize by **project type** (SaaS, API, Mobile, CLI, Data Science). This gives you configs that understand your **use case**, not just your framework.
 
-- Mix framework versions (Pages Router vs App Router)
-- Use deprecated patterns (class components, Svelte 4 syntax)
-- Ignore your project structure (dumping everything in one file)
-- Skip error handling and validation
-- Write untestable code
-- Switch between coding styles mid-generation
+### Multi-Tool Coverage
+You don't just use Cursor. Maybe you use Claude Code in the terminal, Copilot in VS Code, and Windsurf for experiments. Free alternatives only give you `.cursorrules`. We give you configs for **all major AI tools**.
 
-AI Dev Config Toolkit encodes years of production experience into concise instructions that keep your AI assistant on track, regardless of which tool you use.
+### CLAUDE.md Templates (Unique)
+Claude Code is blowing up, but NO free collection offers `CLAUDE.md` templates. We're the first to provide comprehensive project-specific CLAUDE.md files with tech stack docs, common patterns, and troubleshooting.
 
----
-
-## What's Different About These Configs
-
-- **Production-tested** — Every rule comes from real-world projects, not documentation summaries.
-- **Framework-current** — Updated for Next.js 14+, Svelte 5, Pydantic v2, SQLAlchemy 2.0, Go 1.22+.
-- **Opinionated** — Clear guidance, not wishy-washy suggestions. Your AI needs direction.
-- **Concise** — 50-100 lines each. Long enough to be comprehensive, short enough for the AI context window.
-- **Multi-tool native** — Not just Cursor rules renamed. Each tool gets optimized formatting.
-- **Immediately usable** — Copy, paste, code. No configuration needed.
-
----
-
-## Project Types Covered
-
-### Web Applications
-- Next.js (App Router + TypeScript)
-- SvelteKit (Svelte 5)
-- Django (with Django REST Framework)
-
-### Mobile
-- React Native (with Expo)
-
-### Backend APIs
-- Python FastAPI
-- Node.js Express
-- Go (standard library + gorilla/mux)
-
-### Systems Programming
-- Rust (tokio async runtime)
-
-### Full-Stack Combinations
-All combinations of the above via starter templates and the auto-generator.
-
----
-
-## Auto-Generator Details
-
-The included auto-generator (`bin/generate.js`) provides:
-
-**Stack Detection:**
-- Analyzes `package.json`, `requirements.txt`, `go.mod`, `Cargo.toml`
-- Detects framework from dependencies
-- Identifies monorepo structures
-
-**Interactive Selection:**
-- Confirms detected stack
-- Asks which AI tools you use
-- Offers to install configs for all or selected tools
-
-**Smart Installation:**
-- Creates necessary directories (`.github/`)
-- Handles existing configs (backup before overwrite)
-- Sets correct permissions on Unix systems
-- Validates syntax after installation
-
-**Output:**
-```
-Detected stack: Next.js 14 + TypeScript
-AI tools in use: Cursor, Claude Code
-
-Installing configs:
-  ✓ .cursorrules
-  ✓ CLAUDE.md
-
-Done! Your AI tools are now configured for Next.js best practices.
-```
+### Production-Tested Depth
+Free configs are often 10-30 lines of generic advice. Ours are 50-150 lines of battle-tested patterns from real production projects. We cover:
+- Architecture patterns
+- Error handling
+- Testing strategies
+- Performance optimization
+- Security best practices
+- Deployment considerations
 
 ---
 
@@ -360,4 +317,6 @@ For personal and commercial use. You may use these configs in any project. You m
 
 ---
 
-**Built for developers who want their AI to write code the right way, the first time — no matter which AI coding tool they use.**
+**Built for developers who want their AI coding tools to understand their project from day one.**
+
+**Questions?** GitHub issues: github.com/Wittlesus/cursorrules-pro

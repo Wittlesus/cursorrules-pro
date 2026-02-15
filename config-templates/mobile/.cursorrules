@@ -1,0 +1,65 @@
+# React Native / Expo Mobile App — AI Dev Config Toolkit
+
+You are an expert React Native and Expo developer. Follow these rules strictly.
+
+## Project Conventions
+- Use Expo SDK (managed workflow) unless ejecting is explicitly required.
+- File naming: PascalCase for components, camelCase for hooks and utils, kebab-case for assets.
+- Organize by feature: `features/auth/`, `features/home/`, with shared code in `shared/`.
+- Use TypeScript with `strict: true`. No `any` types.
+- Target both iOS and Android. Always test assumptions on both platforms.
+
+## Navigation
+- Use Expo Router (file-based routing) for navigation. Define layouts with `_layout.tsx`.
+- For stack navigation, use typed routes: `router.push('/profile/[id]')`.
+- Handle deep linking by defining the scheme in `app.json` and testing with `npx uri-scheme`.
+- Use `useLocalSearchParams()` for route params with proper type annotations.
+- Protect routes with redirect logic in layout files, not inline auth checks.
+
+## Components & Styling
+- Use `StyleSheet.create()` for all styles — never inline style objects in JSX.
+- Use `React.memo` for list item components to prevent unnecessary rerenders.
+- Prefer `FlatList` or `FlashList` over `ScrollView` + `.map()` for any list over 10 items.
+- Use `Platform.select()` or `.ios.tsx` / `.android.tsx` file extensions for platform code.
+- Handle safe areas with `SafeAreaView` from `react-native-safe-area-context`, not the core library.
+
+## State Management
+- Local state: `useState` and `useReducer`. Global state: Zustand or Jotai.
+- Server state: TanStack Query (React Query) with proper stale times and cache invalidation.
+- Never store API responses in global state — let React Query manage the cache.
+- Persist critical state with `expo-secure-store` (sensitive) or `AsyncStorage` (non-sensitive).
+
+## Native Modules & APIs
+- Prefer Expo modules (`expo-camera`, `expo-location`, etc.) over community packages.
+- Always check and request permissions before accessing device APIs.
+- Use `expo-notifications` for push notifications. Register for push tokens on app start.
+- Handle app state changes (`AppState.addEventListener`) for background/foreground transitions.
+- Use `expo-file-system` for file operations, never direct filesystem paths.
+
+## Performance
+- Avoid anonymous functions in JSX props — extract to `useCallback` or named functions.
+- Use `useMemo` for expensive computations. Profile with React DevTools before optimizing.
+- Optimize images: use WebP, specify dimensions, cache with `expo-image` (not `Image`).
+- Minimize bridge crossings by batching state updates and reducing native module calls.
+- Use Hermes engine (default in Expo) — ensure code is Hermes-compatible.
+
+## Error Handling
+- Wrap root component with an error boundary (react-error-boundary or custom).
+- Handle network failures gracefully — show retry UI, not crashes.
+- Validate all API responses with Zod before using them. Never trust external data.
+- Use Sentry or Bugsnag for crash reporting with source maps enabled.
+
+## Testing
+- Unit tests: Jest + React Native Testing Library. Test behavior, not implementation.
+- Use `renderHook` for custom hook tests.
+- Mock native modules in `jest.setup.ts`: camera, location, async storage, etc.
+- E2E tests: Detox or Maestro for critical user flows (login, purchase, onboarding).
+- Test on physical devices regularly — simulators miss real-world issues.
+
+## Common Mistakes to Avoid
+- Do NOT use `ScrollView` for long lists — use `FlatList` or `FlashList`.
+- Do NOT hardcode dimensions — use `Dimensions`, `useWindowDimensions`, or flex layouts.
+- Do NOT ignore the keyboard — use `KeyboardAvoidingView` or `react-native-keyboard-aware-scroll-view`.
+- Do NOT store tokens in AsyncStorage — use `expo-secure-store` for credentials.
+- Do NOT skip platform testing — always verify on both iOS and Android.
+- Do NOT use `console.log` in production — use a proper logging library with log levels.
