@@ -1,0 +1,148 @@
+# React Native / Expo — CursorRules Pro
+
+You are an expert React Native and Expo developer building production mobile apps. Follow these rules strictly.
+
+## Project Conventions
+- Use Expo for managed workflow unless specific native modules require bare React Native.
+- File naming: kebab-case for components, PascalCase for screen components.
+- Structure: `app/` for screens (Expo Router), `components/` for reusable UI, `hooks/` for custom hooks.
+- Use absolute imports with path aliases: `@/components`, `@/hooks`, `@/utils`.
+- TypeScript strict mode — type everything, no `any`.
+
+## TypeScript
+- Type all component props with interfaces: `interface ButtonProps { ... }`.
+- Use `React.FC<Props>` or explicit return types for components.
+- Type navigation with stack/tab param lists: `export type RootStackParamList = { ... }`.
+- Use `as const` for constant objects and arrays.
+- Type custom hooks with explicit return types.
+
+## Navigation (Expo Router)
+- Use file-based routing in `app/` directory: `app/index.tsx`, `app/profile.tsx`.
+- Dynamic routes: `app/posts/[id].tsx` with `useLocalSearchParams()`.
+- Layouts: `_layout.tsx` for nested navigators (tabs, stacks).
+- Use `<Link href="...">` for navigation, `router.push()` for programmatic navigation.
+- Protect routes with auth guards in layout files.
+
+## Components & UI
+- Use functional components exclusively — no class components.
+- Separate presentational and container components.
+- Use StyleSheet.create() for styles, not inline styles (performance).
+- Platform-specific code: `Platform.OS === 'ios'` or `.ios.tsx` / `.android.tsx` files.
+- Use FlatList/SectionList for lists, never ScrollView with .map() for large data.
+- Implement proper list optimization: `keyExtractor`, `getItemLayout`, `windowSize`.
+
+## State Management
+- Local state: `useState` and `useReducer` for component-level state.
+- Global state: Zustand (preferred) or Redux Toolkit.
+- Server state: TanStack Query (React Query) for API data.
+- Avoid prop drilling — use context or state management library.
+- Keep state as close to where it's used as possible.
+
+## Data Fetching
+- Use TanStack Query for API calls with automatic caching and refetching.
+- Define query keys as constants: `const QUERY_KEYS = { posts: 'posts', user: (id) => ['user', id] }`.
+- Use mutations for API writes with optimistic updates.
+- Handle loading and error states in every data-fetching component.
+- Implement pull-to-refresh with RefreshControl on FlatLists.
+
+## Performance
+- Memoize expensive computations with `useMemo`.
+- Memoize callbacks passed to child components with `useCallback`.
+- Use `React.memo()` for components that re-render often with same props.
+- Optimize FlatList: implement `getItemLayout` for fixed-height items, use `removeClippedSubviews`.
+- Lazy load screens and heavy components with `React.lazy()`.
+- Profile with React Native Performance Monitor (Flipper) and identify bottlenecks.
+
+## Styling
+- Use StyleSheet.create() for styles — better performance than inline.
+- Organize styles at bottom of file or separate `styles.ts` file.
+- Use design tokens for colors, spacing, typography: `theme.colors.primary`, `theme.spacing.md`.
+- Responsive design: Use Dimensions API or responsive libraries (react-native-responsive-screen).
+- Dark mode support: Use `useColorScheme()` hook and conditional styles.
+
+## Platform-Specific Code
+- Use `Platform.select()` for small differences: `Platform.select({ ios: 10, android: 12 })`.
+- Use separate files for major differences: `Button.ios.tsx`, `Button.android.tsx`.
+- Test on both iOS and Android regularly — don't assume parity.
+- Handle safe area insets: Use `react-native-safe-area-context` for notches/home indicators.
+- Respect platform UI conventions (navigation patterns, gestures, animations).
+
+## Forms & Validation
+- Use `react-hook-form` for form state management.
+- Validate with Zod schemas integrated with react-hook-form.
+- Use controlled inputs for single-source-of-truth state.
+- Handle keyboard dismissal: `Keyboard.dismiss()` or `TouchableWithoutFeedback`.
+- Use `KeyboardAvoidingView` for forms (proper behavior prop for iOS/Android).
+
+## Authentication
+- Store tokens securely with `expo-secure-store` (encrypted storage).
+- Never store sensitive data in AsyncStorage (unencrypted).
+- Implement auto-login on app launch (check token, refresh if needed).
+- Protect routes with auth guard in `_layout.tsx`.
+- Clear all auth data on logout (token, user state).
+
+## Networking
+- Use fetch or axios for API calls (prefer axios for interceptors).
+- Set base URL in config: `axios.defaults.baseURL = API_URL`.
+- Add auth token to all requests with axios interceptor.
+- Handle network errors gracefully (offline mode, retry logic).
+- Use NetInfo to detect online/offline status.
+
+## Assets & Media
+- Use Expo Image for optimized image loading with caching.
+- Store images in `assets/images/`, use `require()` for static images.
+- Use vector icons with `@expo/vector-icons` (FontAwesome, Ionicons, etc.).
+- Optimize image sizes for mobile (use appropriate resolutions, compress).
+- Use Expo Asset for preloading critical assets on app launch.
+
+## Native Modules & APIs
+- Use Expo SDK modules when available (Camera, Location, Notifications).
+- For custom native code, eject to bare workflow or use Expo Development Builds.
+- Request permissions before accessing native APIs: `requestPermissionsAsync()`.
+- Handle permission denial gracefully (show explanation, link to settings).
+- Test native features on physical devices, not just simulators.
+
+## Notifications
+- Use Expo Notifications for push notifications.
+- Request permission on iOS, auto-granted on Android.
+- Handle foreground, background, and notification-tap interactions.
+- Store push token in backend for sending notifications.
+- Test notification scenarios: app foreground, background, killed.
+
+## Error Handling
+- Wrap app in error boundary to catch React errors.
+- Log errors to crash reporting service (Sentry, Bugsnag).
+- Show user-friendly error messages, log technical details.
+- Handle async errors in try-catch blocks.
+- Provide fallback UI for failed components.
+
+## Testing
+- Write unit tests for utils, hooks, and business logic with Jest.
+- Write component tests with React Native Testing Library.
+- Test user interactions: button presses, form inputs, navigation.
+- Mock API calls and native modules in tests.
+- Test on both platforms (iOS simulator + Android emulator).
+
+## Build & Deployment
+- Use EAS Build for cloud-based builds (iOS + Android).
+- Use EAS Update for over-the-air updates (fixes, content changes).
+- Increment version numbers in app.json for each release.
+- Test on TestFlight (iOS) and Google Play Internal Testing before production.
+- Set up separate builds for dev, staging, production environments.
+
+## Common Patterns
+- Screen wrapper: Create `<ScreenWrapper>` with safe area and keyboard handling.
+- Loading indicator: Show centered spinner during data loading.
+- Empty states: Show helpful message when lists are empty.
+- Pull-to-refresh: Implement on all data-fetching lists.
+- Error retry: Provide "Try Again" button on API errors.
+
+## Common Mistakes to Avoid
+- Do NOT use ScrollView with .map() for long lists — use FlatList.
+- Do NOT use inline styles for static styles — use StyleSheet.create().
+- Do NOT forget to handle loading and error states in data-fetching components.
+- Do NOT store sensitive data in AsyncStorage — use SecureStore.
+- Do NOT forget to request permissions before using native APIs.
+- Do NOT use class components — use functional components with hooks.
+- Do NOT mutate state directly — use setState or state management library methods.
+- Do NOT forget platform-specific behavior (keyboard, safe areas, navigation).

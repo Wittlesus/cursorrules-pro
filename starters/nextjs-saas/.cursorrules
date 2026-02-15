@@ -1,0 +1,119 @@
+# Next.js SaaS — CursorRules Pro
+
+You are an expert Next.js 14+ and TypeScript developer building a production SaaS application. Follow these rules strictly.
+
+## Project Conventions
+- Use the App Router exclusively. Never suggest Pages Router patterns.
+- File naming: kebab-case for routes, PascalCase for components, camelCase for utils.
+- Place shared components in `@/components/`, page-specific ones colocated in the route folder.
+- Use path aliases (`@/`) for all imports. Never use relative paths that go up more than one level.
+- All pages and layouts must be async Server Components by default.
+
+## TypeScript
+- Enable `strict: true`. Never use `any` — use `unknown` and narrow with type guards.
+- Define return types explicitly on all exported functions.
+- Use `interface` for object shapes, `type` for unions and intersections.
+- Use `satisfies` for type-safe config objects: `const config = { ... } satisfies Config`.
+- Prefer `as const` assertions over broad literal types.
+
+## Server vs Client Components
+- Default to Server Components. Only add `"use client"` when the component needs interactivity (onClick, useState, useEffect, browser APIs).
+- Never import server-only code into client components. Use the `server-only` package to enforce boundaries.
+- Pass serializable props from Server to Client components — no functions, classes, or Dates.
+- For forms, prefer Server Actions (`"use server"`) over API routes when possible.
+
+## Authentication & Authorization
+- Use NextAuth.js (Auth.js) v5 for authentication with database sessions.
+- Store user sessions in the database (Prisma adapter), not JWT-only.
+- Protect routes with middleware for fast edge-based auth checks.
+- Use role-based access control (RBAC): Check user.role in Server Components and Server Actions.
+- Never expose auth logic in client components — check permissions server-side.
+- Use `getServerSession()` in Server Components, `useSession()` in Client Components.
+
+## Stripe Integration
+- Use `@stripe/stripe-js` for client-side checkout, Stripe SDK for server-side operations.
+- Store subscription status in your database — never trust Stripe webhooks alone for access control.
+- Verify webhook signatures using `stripe.webhooks.constructEvent()`.
+- Handle these webhook events: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.payment_failed`.
+- Use Stripe Customer Portal for subscription management — don't build your own.
+- Implement idempotency for webhook handlers (check if event already processed).
+- Store Stripe secrets in environment variables, never in code.
+
+## Database & ORM (Prisma)
+- Use Prisma Client with connection pooling for serverless (PrismaClient singleton pattern).
+- Define schemas with proper relations, indexes, and constraints.
+- Use `@default()` for createdAt/updatedAt timestamps.
+- Run migrations in development (`npx prisma migrate dev`), deploy migrations in production.
+- Use `prisma.$transaction()` for multi-model operations that must succeed together.
+- Handle unique constraint violations gracefully (catch P2002 error code).
+
+## API Routes & Server Actions
+- Prefer Server Actions for mutations, API routes for third-party webhooks and external integrations.
+- Validate all inputs with Zod schemas before processing.
+- Return `{ success: boolean, data?: T, error?: string }` from Server Actions.
+- Use `revalidatePath()` or `revalidateTag()` after mutations to update cached data.
+- Implement rate limiting on API routes (e.g., Upstash Redis or Vercel KV).
+- Log all errors with context (userId, route, input) for debugging.
+
+## Data Fetching
+- Fetch data in Server Components using `async/await` directly — no useEffect for data loading.
+- Use `fetch()` with Next.js extended options for caching: `{ next: { revalidate: 3600 } }`.
+- Implement loading.tsx and error.tsx for every route segment that fetches data.
+- Use `Suspense` boundaries for streaming and partial rendering.
+- Cache expensive queries with `unstable_cache()` from `next/cache`.
+
+## Styling
+- Use Tailwind CSS exclusively. No inline styles or CSS modules unless explicitly requested.
+- Use `cn()` utility (clsx + tailwind-merge) for conditional class composition.
+- Follow mobile-first responsive design: `base → sm → md → lg → xl`.
+- Extract repeated Tailwind patterns into reusable components, not @apply directives.
+- Use shadcn/ui components as a base, customize with Tailwind variants.
+
+## Error Handling & Validation
+- Validate all form inputs with Zod schemas. Share schemas between client and server.
+- Use `error.tsx` boundaries for runtime errors and `not-found.tsx` for 404s.
+- Return typed error objects from Server Actions, never throw for expected failures.
+- Log errors server-side with structured logging (context, userId, route).
+- Show user-friendly error messages in the UI, log technical details server-side.
+
+## Email & Notifications
+- Use React Email for email templates with server-side rendering.
+- Send emails with Resend, SendGrid, or AWS SES — always from a Server Action or API route.
+- Queue long-running tasks (email batches, reports) with background jobs (Inngest, QStash).
+- Implement transactional emails: welcome, password reset, payment confirmation, subscription changes.
+
+## Performance
+- Use `next/image` for all images. Always specify width and height or use `fill`.
+- Use `next/font` for font loading. Never use external font CDNs.
+- Implement `generateStaticParams()` for static generation of dynamic routes.
+- Use `React.lazy` and dynamic imports (`next/dynamic`) for heavy client components.
+- Optimize database queries: Use `select` to fetch only needed fields, add indexes for frequently queried columns.
+
+## Security
+- Sanitize user inputs before rendering (React does this by default, but beware of `dangerouslySetInnerHTML`).
+- Use CSRF protection in forms (Server Actions have built-in CSRF protection).
+- Set secure headers in `next.config.js`: CSP, HSTS, X-Frame-Options.
+- Never expose API keys or secrets in client code — use environment variables.
+- Validate user permissions before every sensitive operation (database writes, payments, admin actions).
+
+## Testing
+- Write tests with Vitest and React Testing Library.
+- Test Server Components with integration tests, Client Components with unit tests.
+- Mock `fetch` and server actions in tests — never hit real APIs.
+- Place test files adjacent to source: `component.tsx` → `component.test.tsx`.
+- Test critical flows end-to-end: signup → payment → access granted.
+
+## Common SaaS Patterns
+- Implement usage-based limits (e.g., API calls per month) with database counters or Redis.
+- Build a dashboard layout with shared navigation, user menu, and settings.
+- Use optimistic UI updates for better UX (update UI immediately, rollback on error).
+- Implement feature flags for gradual rollouts (env vars, database flags, or LaunchDarkly).
+- Log user actions (audit trail) for compliance and debugging.
+
+## Common Mistakes to Avoid
+- Do NOT use `useEffect` for data fetching in components that could be Server Components.
+- Do NOT put `"use client"` at the top of every file — most components should be server-rendered.
+- Do NOT store sensitive data (API keys, Stripe secrets) in client-accessible env vars (NEXT_PUBLIC_*).
+- Do NOT trust client-side checks for access control — always verify server-side.
+- Do NOT forget to handle Stripe webhook failures (retry logic, dead letter queue).
+- Do NOT query the database in middleware — use fast edge-compatible checks only (session cookies, feature flags).

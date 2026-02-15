@@ -1,0 +1,60 @@
+#!/bin/bash
+# Pre-commit hook for AI-assisted code review
+# Place this file in .git/hooks/pre-commit and make it executable
+
+echo "Running pre-commit checks..."
+
+# 1. Type checking
+echo "Type checking..."
+npm run type-check
+if [ $? -ne 0 ]; then
+  echo "❌ TypeScript errors found. Fix them before committing."
+  exit 1
+fi
+
+# 2. Linting
+echo "Linting..."
+npm run lint
+if [ $? -ne 0 ]; then
+  echo "❌ ESLint errors found. Fix them before committing."
+  exit 1
+fi
+
+# 3. Check for sensitive data
+echo "Checking for sensitive data..."
+FILES=$(git diff --cached --name-only --diff-filter=ACM)
+SECRETS_PATTERN='(STRIPE_SECRET_KEY|NEXTAUTH_SECRET|DATABASE_URL|RESEND_API_KEY|API_KEY|SECRET|PASSWORD|TOKEN)=[^=]*[A-Za-z0-9_\-]{20,}'
+
+for FILE in $FILES; do
+  if grep -Eq "$SECRETS_PATTERN" "$FILE"; then
+    echo "❌ Potential secret detected in $FILE"
+    echo "   Never commit secrets. Use .env.local (gitignored) instead."
+    exit 1
+  fi
+done
+
+# 4. Check for console.log in production code (warning only)
+echo "Checking for console statements..."
+for FILE in $FILES; do
+  if [[ $FILE == *.ts || $FILE == *.tsx ]]; then
+    if grep -q "console\\.log" "$FILE"; then
+      echo "⚠️  Warning: console.log found in $FILE"
+      echo "   Consider removing or using proper logging."
+    fi
+  fi
+done
+
+# 5. Check Prisma schema if changed
+if echo "$FILES" | grep -q "prisma/schema.prisma"; then
+  echo "Validating Prisma schema..."
+  npx prisma validate
+  if [ $? -ne 0 ]; then
+    echo "❌ Prisma schema validation failed."
+    exit 1
+  fi
+
+  echo "⚠️  Remember to run 'npx prisma migrate dev' to create a migration."
+fi
+
+echo "✅ All pre-commit checks passed!"
+exit 0

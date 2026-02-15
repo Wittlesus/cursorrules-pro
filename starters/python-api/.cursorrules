@@ -1,0 +1,136 @@
+# Python API (FastAPI/Flask) — CursorRules Pro
+
+You are an expert Python API developer building production-grade REST APIs. Follow these rules strictly.
+
+## Project Conventions
+- Use Python 3.11+ with type hints everywhere (`-> ReturnType`, `: ParamType`).
+- File naming: snake_case for all Python files and modules.
+- Structure: `app/` for application code, `tests/` for tests, `scripts/` for utilities.
+- Use absolute imports from app root: `from app.models import User`, not relative imports.
+- Entry point: `main.py` or `app/main.py` with proper CLI entrypoint.
+
+## Type Hints & Validation
+- Use Pydantic v2 for all request/response models and configuration.
+- Define BaseModel subclasses for API schemas: `CreateUserRequest`, `UserResponse`.
+- Use `ConfigDict` for Pydantic model configuration (was `Config` class in v1).
+- Type hint all function signatures: `def get_user(user_id: int) -> User | None:`.
+- Use `TypedDict` for dictionary structures, not plain `dict`.
+- Use `from typing import Annotated` for dependency injection types.
+
+## FastAPI Specifics
+- Use dependency injection (`Depends()`) for database sessions, auth, and shared logic.
+- Define route handlers with explicit response models: `@app.get("/users", response_model=list[UserResponse])`.
+- Use `HTTPException` for error responses with proper status codes and detail messages.
+- Implement async route handlers for I/O operations: `async def get_users() -> list[User]:`.
+- Use `BackgroundTasks` for non-blocking operations (email sending, logging, cleanup).
+- Organize routes with `APIRouter` — one router per resource (users, posts, auth).
+
+## Database (SQLAlchemy 2.0+)
+- Use SQLAlchemy 2.0+ async style with `AsyncSession` and `asyncio`.
+- Define models with declarative base: `class User(Base):`.
+- Use `Mapped[int]` type annotations for columns (SQLAlchemy 2.0 style).
+- Implement proper relationships with `relationship()` and `back_populates`.
+- Use `select()` for queries, not legacy `query()` API.
+- Create database session dependency: `get_db() -> AsyncGenerator[AsyncSession, None]`.
+- Run migrations with Alembic — auto-generate from models, review before applying.
+
+## Authentication & Authorization
+- Use JWT tokens for stateless auth: `python-jose[cryptography]` for encoding/decoding.
+- Store hashed passwords only: `passlib[bcrypt]` with proper salt rounds (12+).
+- Implement OAuth2 password bearer flow with `OAuth2PasswordBearer`.
+- Validate tokens in dependencies: `get_current_user(token: Annotated[str, Depends(oauth2_scheme)])`.
+- Use role-based access control (RBAC) with user roles in database.
+- Refresh tokens should be stored in database (user_id, token_hash, expires_at).
+- Never log or return passwords, even hashed ones.
+
+## Error Handling
+- Use `HTTPException` for expected errors (400, 401, 403, 404).
+- Implement global exception handler for unexpected errors (500).
+- Return consistent error format: `{"detail": "Error message"}`.
+- Log all errors with context (user_id, endpoint, request_id).
+- Use custom exception classes for domain errors: `UserNotFoundError`, `InvalidCredentialsError`.
+- Raise exceptions early (fail fast), handle at route level.
+
+## API Design
+- Follow REST conventions: GET (read), POST (create), PUT (replace), PATCH (update), DELETE.
+- Use plural nouns for resources: `/users`, `/posts`, not `/user`, `/post`.
+- Version your API: `/api/v1/users` or use headers `Accept: application/vnd.api.v1+json`.
+- Implement pagination for list endpoints: `?page=1&limit=50` with max limit enforcement.
+- Use query parameters for filtering, sorting: `?status=active&sort=-created_at`.
+- Return proper HTTP status codes: 200 (success), 201 (created), 204 (no content), 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 500 (server error).
+
+## Data Validation
+- Validate all inputs with Pydantic models at route level.
+- Use `Field()` for constraints: `Field(min_length=3, max_length=50)`.
+- Define custom validators with `@field_validator`: email format, password strength, date ranges.
+- Use `model_validator` for cross-field validation (e.g., end_date > start_date).
+- Return validation errors with field names and messages: `{"detail": [{"loc": ["body", "email"], "msg": "Invalid email format"}]}`.
+
+## Performance
+- Use async database operations with connection pooling.
+- Implement caching with Redis for expensive queries (user sessions, config).
+- Use `select(User).options(joinedload(User.posts))` to avoid N+1 queries.
+- Limit response size: pagination, field selection (`?fields=id,name,email`).
+- Use background tasks for non-critical operations (analytics, emails).
+- Profile slow endpoints with `slowapi` or custom middleware.
+
+## Security
+- Validate and sanitize all user inputs (Pydantic does most of this).
+- Use parameterized queries (SQLAlchemy ORM prevents SQL injection by default).
+- Set CORS properly: restrict origins, methods, headers in production.
+- Rate limit API endpoints: `slowapi` with Redis backend.
+- Use HTTPS in production (enforce with middleware redirect).
+- Set security headers: HSTS, X-Content-Type-Options, X-Frame-Options.
+- Never expose internal error details to clients in production.
+
+## Testing
+- Write tests with pytest and pytest-asyncio.
+- Use `TestClient` from FastAPI or `httpx.AsyncClient` for route testing.
+- Mock database with in-memory SQLite or test database (separate from dev DB).
+- Test factories with `factory_boy` for creating test data.
+- Test authentication with fixture users and tokens.
+- Place test files in `tests/` directory mirroring `app/` structure.
+- Run coverage reports: `pytest --cov=app tests/`.
+
+## Configuration
+- Use Pydantic Settings for environment-based config: `class Settings(BaseSettings):`.
+- Store secrets in environment variables or `.env` file (gitignored).
+- Define config schema with validation: `DATABASE_URL`, `SECRET_KEY`, `DEBUG`.
+- Use different configs for dev/test/prod: `.env.dev`, `.env.prod`.
+- Never commit secrets to git — use `.env.example` as template.
+
+## Logging
+- Use Python's `logging` module with structured logs (JSON in production).
+- Log levels: DEBUG (dev only), INFO (normal operations), WARNING (recoverable errors), ERROR (failures), CRITICAL (system down).
+- Include request context in logs: request_id, user_id, endpoint, method.
+- Use correlation IDs for tracing requests across services.
+- Log to stdout (container-friendly), aggregate with external service (Datadog, Sentry).
+
+## Dependencies
+- Use Poetry or pip-tools for deterministic dependency management.
+- Pin major versions in production: `fastapi>=0.100,<0.101`.
+- Separate dev dependencies: `pytest`, `black`, `ruff`, `mypy`.
+- Keep dependencies minimal — avoid bloat.
+
+## Code Quality
+- Format code with `black` (line length 88).
+- Lint with `ruff` (fast, modern linter replaces flake8/pylint/isort).
+- Type check with `mypy` in strict mode.
+- Run pre-commit hooks: formatting, linting, type checking.
+- Write docstrings for all public functions and classes (Google or NumPy style).
+
+## Common Patterns
+- Use dependency injection for shared logic (DB sessions, auth, config).
+- Implement service layer for business logic, keep routes thin.
+- Use repository pattern for database access: `UserRepository.get_by_id()`.
+- Implement DTOs (Data Transfer Objects) with Pydantic for API contracts.
+- Use enums for status fields: `class Status(str, Enum): ACTIVE = "active"`.
+
+## Common Mistakes to Avoid
+- Do NOT use synchronous database operations with FastAPI async routes.
+- Do NOT store passwords in plain text or weak hashes (MD5, SHA1).
+- Do NOT trust client input — validate everything.
+- Do NOT return raw database models from routes — use Pydantic response models.
+- Do NOT forget to close database connections (use dependency injection with `finally`).
+- Do NOT use `dict` or `list` for structured data — use Pydantic models or TypedDict.
+- Do NOT log sensitive data (passwords, tokens, PII).

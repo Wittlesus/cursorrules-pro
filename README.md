@@ -1,10 +1,13 @@
-# AI Dev Config Toolkit — Production Configs for Cursor, Claude Code, Windsurf & Copilot
+# AI Dev Config Toolkit — Production Configs for Every AI Coding Tool
 
 **Stop configuring your AI coding tools. Start shipping.**
 
-awesome-cursorrules gives you Cursor rules. We give you production configs for EVERY AI coding tool.
+awesome-cursorrules gives you Cursor rules. We give you complete production configs for EVERY AI coding tool, plus advanced starters and automation tools.
 
-The only AI coding config pack that covers all 4 major AI coding tools with project-specific starters and auto-generators.
+The only AI coding config pack with:
+- **8 stack-specific configs** for Cursor, Claude Code, Windsurf & Copilot
+- **4 advanced project starters** (Next.js SaaS, Python API, React Native, Monorepo)
+- **Auto-generation tools** that scan your project and create configs automatically
 
 ## Pricing
 
@@ -13,11 +16,12 @@ The only AI coding config pack that covers all 4 major AI coding tools with proj
 [**Buy Now**](https://buy.stripe.com/8x24gydPfeFY1AU5Bo08g05)
 
 What you get:
-- 8 production-tested config sets for popular stacks
-- Works with Cursor, Claude Code, Windsurf, GitHub Copilot
-- CLAUDE.md templates, Windsurf configs, Copilot instructions
-- Auto-generator scripts for new project types
-- Customization guide and team sharing instructions
+- **8 stack-specific configs** — Next.js, React Native, FastAPI, Express, Rust, Go, SvelteKit, Django
+- **4 advanced starters** — Complete configs for Next.js SaaS, Python API, React Native, Monorepo
+- **Auto-generation tools** — Scan projects and create CLAUDE.md automatically
+- **Migration tools** — Convert between .cursorrules and CLAUDE.md formats
+- **Setup scripts** — One-command install for any starter (Bash + PowerShell)
+- Works with all major AI tools: Cursor, Cline, Claude Code, GitHub Copilot, Windsurf
 - Lifetime updates as stacks evolve
 
 **Save $119:** Get this + 6 other products in the [Complete Bundle for $99](https://buy.stripe.com/5kQeVceTj0P8enGe7U08g06)
@@ -32,12 +36,13 @@ What you get:
 | CLAUDE.md templates | No | No | Yes |
 | Windsurf configs | No | No | Yes |
 | Copilot instructions | No | No | Yes |
-| Project-type starters | No | No | Yes |
-| Setup scripts | No | No | Yes |
-| Auto-generators | No | No | Yes |
+| Advanced starters | No | No | **Yes (4 types)** |
+| Setup scripts | No | No | **Yes (Bash + PowerShell)** |
+| Auto-generators | No | No | **Yes** |
+| Migration tools | No | No | **Yes** |
 | Production-tested | Sometimes | Sometimes | Always |
-| Framework-current | Varies | Varies | Yes (Next.js 14+, Svelte 5, etc.) |
-| Length/Depth | 10-20 lines | 10-30 lines | 50-100 lines |
+| Framework-current | Varies | Varies | Yes (Next.js 14+, Svelte 5, Pydantic v2, etc.) |
+| Length/Depth | 10-20 lines | 10-30 lines | 50-130 lines |
 | Multi-tool support | No | No | Yes |
 
 **The difference:** Free alternatives give you basic Cursor rules. We give you complete configuration coverage across all major AI coding tools, with deep, opinionated guidance that actually changes AI output quality.
@@ -61,59 +66,136 @@ Each stack includes configs for **all 4 major AI coding tools**:
 | **SvelteKit** | Full multi-tool configs | Svelte 5 runes, load functions, form actions, SSR, stores |
 | **Django** | Full multi-tool configs | Models, DRF serializers, signals, Celery, pytest-django, factory_boy |
 
-### Project-Type Starters
+### 4 Advanced Project Starters
 
-Pre-configured starter templates for:
-- Full-stack monorepos (Next.js + FastAPI)
-- Mobile apps (React Native + Express API)
-- Microservices (Go + Python)
-- Real-time apps (SvelteKit + WebSockets)
+Complete, opinionated configs that go beyond basic stack rules:
 
-### Auto-Generator Scripts
+#### 1. Next.js SaaS Starter
+- `.cursorrules` with SaaS-specific patterns (auth, Stripe, database)
+- `CLAUDE.md` with project structure, key files, deployment notes
+- `.vscode/settings.json` with recommended extensions
+- Pre-commit hook for AI-assisted code review
+- **Covers:** NextAuth.js, Stripe webhooks, Prisma, Server Actions, RBAC
 
-Quick-start scripts that:
-1. Detect your project's tech stack
-2. Generate appropriate configs for all 4 AI tools
-3. Install them in the correct locations
-4. Validate compatibility
+#### 2. Python API Starter
+- `.cursorrules` for FastAPI/Flask production patterns
+- `CLAUDE.md` with API structure and conventions
+- `Makefile` with documented commands (dev, test, migrate)
+- **Covers:** SQLAlchemy 2.0 async, JWT auth, Pydantic v2, Alembic
+
+#### 3. React Native Starter
+- `.cursorrules` for mobile-specific patterns
+- `CLAUDE.md` with navigation structure, platform differences
+- **Covers:** Expo Router, TanStack Query, Zustand, push notifications, EAS
+
+#### 4. Monorepo Starter
+- `.cursorrules` for Turborepo/Nx patterns
+- `CLAUDE.md` with workspace structure, task pipeline
+- **Covers:** pnpm workspaces, cross-package imports, caching, versioning
+
+**One-command setup:**
+```bash
+./starters/setup.sh nextjs-saas /path/to/project  # Bash
+.\starters\setup.ps1 nextjs-saas C:\path\to\project  # PowerShell
+```
+
+### Automation Tools
+
+#### `generate-claude-md.sh`
+Auto-generates CLAUDE.md from your project:
+- Detects tech stack (package.json, requirements.txt, etc.)
+- Extracts commands from package.json and Makefile
+- Generates project structure tree
+- Identifies key files
+
+```bash
+./tools/generate-claude-md.sh /path/to/project
+```
+
+#### `migrate-cursorrules.sh`
+Converts between .cursorrules and CLAUDE.md formats:
+- Auto-detects conversion direction
+- Preserves formatting
+- Shows compatibility info
+
+```bash
+./tools/migrate-cursorrules.sh .cursorrules CLAUDE.md
+./tools/migrate-cursorrules.sh CLAUDE.md .cursorrules
+```
 
 ---
 
 ## Quick Start
 
-### For Cursor
+### Option 1: Use an Advanced Starter (Recommended)
 
-1. Copy the `.cursorrules` file for your stack into your project root.
-2. Rename it to `.cursorrules` (if not already).
-3. Open your project in Cursor. The rules are active immediately.
-
-### For Claude Code
-
-1. Copy the `CLAUDE.md` file for your stack into your project root.
-2. That's it. Claude Code will auto-detect it.
-
-### For Windsurf
-
-1. Copy the `.windsurfrules` file for your stack into your project root.
-2. Reload Windsurf to activate.
-
-### For GitHub Copilot
-
-1. Create a `.github/` directory in your project root (if it doesn't exist).
-2. Copy the `copilot-instructions.md` file into `.github/copilot-instructions.md`.
-3. Copilot will use it for all suggestions in that repo.
-
-### Using the Auto-Generator (Recommended)
+For new projects or major setup:
 
 ```bash
-# Run the generator in your project directory
-node path/to/ai-dev-config-toolkit/bin/generate.js
+# Bash (Linux/macOS/Git Bash on Windows)
+./starters/setup.sh nextjs-saas /path/to/my-project
 
-# It will:
-# 1. Detect your stack (by analyzing package.json, requirements.txt, etc.)
-# 2. Ask which AI tools you use
-# 3. Install the appropriate configs
-# 4. Show you what it created
+# PowerShell (Windows)
+.\starters\setup.ps1 nextjs-saas C:\path\to\my-project
+```
+
+Available starters: `nextjs-saas`, `python-api`, `react-native`, `monorepo`
+
+This installs:
+- `.cursorrules` with stack-specific rules
+- `CLAUDE.md` with project structure and context
+- `.vscode/settings.json` (for applicable starters)
+- Pre-commit hooks (for applicable starters)
+- Makefile (for Python API)
+
+### Option 2: Auto-Generate from Existing Project
+
+For existing projects:
+
+```bash
+./tools/generate-claude-md.sh /path/to/project
+```
+
+This scans your project and creates a basic `CLAUDE.md` with:
+- Detected tech stack
+- Project structure
+- Key commands
+- Key files
+
+### Option 3: Manual Setup (Stack-Specific Rules)
+
+#### For Cursor
+
+1. Copy the `.cursorrules` file for your stack from `rules/` into your project root.
+2. Open your project in Cursor. The rules are active immediately.
+
+#### For Claude Code
+
+1. Copy the `CLAUDE.md` template from a starter or use the auto-generator.
+2. Claude Code will auto-detect it.
+
+#### For Windsurf
+
+1. Copy the `.cursorrules` file and rename it to `.windsurfrules`.
+2. Place in your project root. Reload Windsurf to activate.
+
+#### For GitHub Copilot
+
+1. Create a `.github/` directory in your project root (if it doesn't exist).
+2. Copy your `.cursorrules` content into `.github/copilot-instructions.md`.
+
+### Option 4: Convert Between Formats
+
+Already have a `.cursorrules` file? Convert it:
+
+```bash
+./tools/migrate-cursorrules.sh .cursorrules CLAUDE.md
+```
+
+Or convert from CLAUDE.md to .cursorrules:
+
+```bash
+./tools/migrate-cursorrules.sh CLAUDE.md .cursorrules
 ```
 
 ---

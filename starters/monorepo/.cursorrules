@@ -1,0 +1,188 @@
+# Monorepo (Turborepo/Nx) — CursorRules Pro
+
+You are an expert in building and maintaining TypeScript monorepos with Turborepo or Nx. Follow these rules strictly.
+
+## Project Conventions
+- Use Turborepo (preferred for simplicity) or Nx (for advanced features).
+- Package manager: pnpm (best for monorepos with workspace support).
+- File naming: kebab-case for packages, PascalCase for components, camelCase for utils.
+- Each package is independently versioned and publishable (where applicable).
+- Shared code goes in `packages/`, apps in `apps/`.
+
+## Monorepo Structure
+```
+apps/
+  web/              # Next.js web app
+  mobile/           # React Native app
+  api/              # Backend API
+packages/
+  ui/               # Shared UI components
+  config/           # Shared config (ESLint, TypeScript, Tailwind)
+  utils/            # Shared utilities
+  types/            # Shared TypeScript types
+  database/         # Prisma schema and client
+```
+
+## TypeScript
+- Use strict mode in all packages.
+- Use project references (`tsconfig.json` with `references: []`) for better build performance.
+- Define shared types in `packages/types` and import across packages.
+- Each package has its own `tsconfig.json` extending from shared config.
+- Use path mapping for internal imports: `@repo/ui`, `@repo/utils`.
+
+## Package Dependencies
+- Use workspace protocol in package.json: `"@repo/ui": "workspace:*"`.
+- Hoist shared dependencies to root (React, TypeScript, ESLint).
+- Keep package-specific dependencies local to each package.
+- Use exact versions for production dependencies, ranges for dev dependencies.
+- Update dependencies across all packages simultaneously: `pnpm update -r`.
+
+## Turborepo Configuration
+- Define pipelines in `turbo.json` for tasks: build, test, lint, dev.
+- Use caching for all deterministic tasks (build, lint, test).
+- Define task dependencies: `"build": { "dependsOn": ["^build"] }` (build dependencies first).
+- Use outputs to cache build artifacts: `"outputs": ["dist/**", ".next/**"]`.
+- Use environment variables in cache keys: `"env": ["DATABASE_URL"]`.
+
+## Build Orchestration
+- Run tasks from root: `pnpm build` (builds all packages in dependency order).
+- Run tasks for specific package: `pnpm build --filter=web`.
+- Run tasks in parallel: `pnpm dev` (all apps in parallel with turborepo).
+- Use `--force` to bypass cache when needed.
+- Use `turbo run build --dry` to preview execution plan.
+
+## Shared Packages
+### UI Package (`packages/ui`)
+- Export reusable React components used by web and mobile apps.
+- Use TypeScript with explicit prop interfaces.
+- Include storybook for component documentation.
+- Build with tsup or unbuild (fast, zero-config bundlers).
+- Export from index.ts: `export { Button } from './Button';`.
+
+### Config Package (`packages/config`)
+- Export shared configs: ESLint, TypeScript, Tailwind, Prettier.
+- Apps extend these configs: `"extends": "@repo/config/eslint"`.
+- Version config changes carefully (breaking changes affect all apps).
+
+### Types Package (`packages/types`)
+- Define shared TypeScript interfaces and types.
+- Use for API contracts (request/response types shared between frontend and backend).
+- Keep types pure (no runtime code, only type definitions).
+
+### Database Package (`packages/database`)
+- Single Prisma schema used by all apps that need database access.
+- Export Prisma Client from index.ts: `export * from '@prisma/client';`.
+- Run migrations from this package: `cd packages/database && npx prisma migrate dev`.
+- Apps import: `import { prisma } from '@repo/database';`.
+
+## Dependency Management
+- Install dependency for specific package: `pnpm add <package> --filter=web`.
+- Install dev dependency at root: `pnpm add -Dw <package>`.
+- Check for dependency issues: `pnpm dedupe`.
+- Update all packages: `pnpm update -r`.
+- Use `pnpm why <package>` to debug dependency tree.
+
+## Cross-Package Imports
+- Use workspace imports: `import { Button } from '@repo/ui';`.
+- Configure TypeScript paths in root tsconfig.json:
+  ```json
+  {
+    "compilerOptions": {
+      "paths": {
+        "@repo/ui": ["./packages/ui/src"],
+        "@repo/utils": ["./packages/utils/src"]
+      }
+    }
+  }
+  ```
+- Build packages before importing (or use dev watchers).
+
+## Scripts Organization
+- Define common scripts in root package.json:
+  ```json
+  {
+    "scripts": {
+      "build": "turbo run build",
+      "dev": "turbo run dev",
+      "lint": "turbo run lint",
+      "test": "turbo run test",
+      "clean": "turbo run clean && rm -rf node_modules"
+    }
+  }
+  ```
+- Define package-specific scripts in each package's package.json.
+- Use pre/post hooks for sequential tasks: `prebuild`, `postbuild`.
+
+## Testing
+- Shared Jest config in `packages/config/jest`.
+- Each package has own test setup and runs tests independently.
+- Run all tests: `pnpm test` (Turborepo runs in parallel).
+- Run tests for one package: `pnpm test --filter=web`.
+- Mock cross-package imports in tests.
+
+## Linting & Formatting
+- Shared ESLint config in `packages/config/eslint`.
+- Shared Prettier config in root `.prettierrc`.
+- Run lint across all packages: `pnpm lint`.
+- Fix lint errors: `pnpm lint --fix`.
+- Use pre-commit hooks (husky + lint-staged) to enforce quality.
+
+## Versioning & Publishing
+- Use Changesets for versioning: `pnpm changeset`.
+- Version packages independently based on changes.
+- Generate changelog automatically from changesets.
+- Publish to npm: `pnpm changeset publish`.
+- Tag releases in git after publishing.
+
+## Development Workflow
+1. Create feature branch from main.
+2. Make changes in relevant packages/apps.
+3. Run `pnpm build` to ensure all builds work.
+4. Run `pnpm lint` and `pnpm test` to catch errors.
+5. Create changeset: `pnpm changeset` (for package changes).
+6. Commit and push, open PR.
+7. CI runs build, lint, test for all affected packages.
+
+## CI/CD
+- Use Turborepo Remote Caching for faster CI builds.
+- Run affected tasks only: `turbo run build --filter=[HEAD^1]`.
+- Cache node_modules with pnpm store.
+- Deploy apps independently (web to Vercel, api to Railway, etc.).
+- Run E2E tests after deploying to staging.
+
+## Common Patterns
+- **Shared utilities:** Create `packages/utils` for common functions used across apps.
+- **Shared UI components:** Create `packages/ui` for React components (buttons, forms, etc.).
+- **Shared config:** Create `packages/config` for ESLint, TypeScript, Tailwind configs.
+- **Monorepo-local packages:** Packages don't need to be published, can be internal only.
+- **App-specific packages:** Some packages may only be used by one app (still beneficial for separation).
+
+## Performance Optimization
+- Use Turborepo caching to skip unchanged tasks.
+- Use pnpm for fast, efficient node_modules with hard links.
+- Build packages in parallel with Turborepo.
+- Use incremental builds (TypeScript `--incremental`).
+- Use remote caching for CI (Vercel, custom S3).
+
+## Common Mistakes to Avoid
+- Do NOT install dependencies at root that should be in specific packages.
+- Do NOT import from source files directly — use built output or dev watchers.
+- Do NOT forget to build packages before importing in other packages.
+- Do NOT use npm or yarn in pnpm monorepo (mixing package managers causes issues).
+- Do NOT ignore turbo.json cache configuration — caching is critical for performance.
+- Do NOT forget to add new packages to turborepo pipeline in turbo.json.
+- Do NOT create circular dependencies between packages (A imports B, B imports A).
+- Do NOT duplicate dependencies across packages — hoist when possible.
+
+## Debugging
+- Check dependency tree: `pnpm why <package>`.
+- Check turborepo execution plan: `turbo run build --dry`.
+- Clear turborepo cache: `turbo run build --force`.
+- Clear all caches and reinstall: `pnpm clean && pnpm install`.
+- Use `--filter` to isolate issues to specific package.
+
+## Migration Tips
+- Migrating to monorepo: Start with apps, extract shared code into packages gradually.
+- Use automated tools: `npx create-turbo@latest` or `npx create-nx-workspace`.
+- Keep existing CI/CD, update to run turborepo tasks.
+- Use `--filter` during migration to test one package at a time.
