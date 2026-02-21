@@ -118,42 +118,6 @@ CLAUDE.md files are project-specific instruction files for Claude Code CLI -- An
 
 ---
 
-## Pricing
-
-<p align="center">
-  <a href="https://buy.stripe.com/8x24gydPfeFY1AU5Bo08g05"><img src="https://img.shields.io/badge/BUY%20NOW-$14-black?style=for-the-badge&logo=stripe&logoColor=white" alt="Buy Now $14"></a>
-</p>
-
-**$14 -- One-time purchase. Lifetime updates.**
-
-**What you get:**
-- 5 project type configs (20 files total)
-- 8 legacy stack configs
-- Full coverage: Cursor, Claude Code, Windsurf, GitHub Copilot
-- CLAUDE.md templates (exclusive -- not available anywhere else for free)
-- Production-tested configs (50-150 lines each)
-- Lifetime updates as AI tools evolve
-
-> **30-day money-back guarantee.** If the configs do not improve your AI coding workflow, get a full refund. No questions asked.
-
-### Save $119
-
-Get AI Dev Config Toolkit + 6 other developer products in the [**Complete Bundle for $99**](https://buy.stripe.com/5kQeVceTj0P8enGe7U08g06).
-
----
-
-## More Developer Tools
-
-| Product | Description | Price |
-|---------|-------------|-------|
-| [LaunchFast SaaS Starter](https://github.com/Wittlesus/launchfast-starter) | Next.js 16 boilerplate with auth, payments, AI, email | $79 |
-| [SEO Blog Engine](https://github.com/Wittlesus/seo-blog-engine) | CLI for generating SEO-optimized blog posts | $29 |
-| [Indie Hacker Toolkit](https://github.com/Wittlesus/indie-hacker-toolkit) | 8 planning templates for solo founders | $19 |
-| [PromptVault](https://github.com/Wittlesus/prompt-vault) | 64 production-ready AI prompts + automation scripts | $19 |
-| [**Complete Bundle**](https://buy.stripe.com/5kQeVceTj0P8enGe7U08g06) | **All products above** | **$99** |
-
----
-
 ## License
 
 Personal and commercial use permitted. You may not redistribute or resell the config collection itself.
